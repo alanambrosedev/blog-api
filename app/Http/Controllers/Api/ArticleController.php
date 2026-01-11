@@ -11,12 +11,7 @@ use App\Services\ArticleService;
 
 class ArticleController extends Controller
 {
-    protected $articleService;
-
-    public function __construct(ArticleService $articleService)
-    {
-        $this->articleService = $articleService;
-    }
+    public function __construct(protected ArticleService $service) {}
 
     public function index()
     {
@@ -35,21 +30,21 @@ class ArticleController extends Controller
 
     public function store(StoreArticleRequest $request)
     {
-        $article = $this->articleService->createArticle($request->validated(), $request->file('image'));
+        $article = $this->service->createArticle($request->validated(), $request->file('image'));
 
         return new ArticleResource($article);
     }
 
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        $updated = $this->articleService->updateArticle($article, $request->validated(), $request->file('image'));
+        $updated = $this->service->updateArticle($article, $request->validated(), $request->file('image'));
 
         return new ArticleResource($updated);
     }
 
     public function delete(Article $article)
     {
-        $this->articleService->deleteArticle($article);
+        $this->service->deleteArticle($article);
 
         return response()->json(null, 204);
     }

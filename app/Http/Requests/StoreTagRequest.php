@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateArticleRequest extends FormRequest
+class StoreTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,7 @@ class UpdateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['sometimes', 'required', 'string', 'max:255'],
-            'text' => ['sometimes', 'required', 'string'],
-            'category_id' => ['sometimes', 'required', 'integer', 'exists:categories,id'],
-            'image' => ['nullable', 'image', 'max:2048'],
-            'is_published' => ['boolean'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['exists:tags,id'],
+            'name' => ['required', 'string', 'max:50', 'unique:tags,name'],
         ];
     }
 }

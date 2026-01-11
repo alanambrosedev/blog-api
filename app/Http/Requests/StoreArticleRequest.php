@@ -22,7 +22,16 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'text' => ['required', 'string'],
+            // Ensure the category_id actually exists in the DB
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
+            // Image is optional, but if present must be a file type (jpeg, png, etc) max 2MB
+            'image' => ['nullable', 'image', 'max:2048'],
+            'is_published' => ['boolean'],
+            // Validate tags array if provided
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['exists:tags,id'], // Check each tag ID exists
         ];
     }
 }
