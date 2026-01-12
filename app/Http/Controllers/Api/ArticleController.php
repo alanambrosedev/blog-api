@@ -46,6 +46,6 @@ class ArticleController extends Controller
     {
         $this->service->deleteArticle($article);
 
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }
