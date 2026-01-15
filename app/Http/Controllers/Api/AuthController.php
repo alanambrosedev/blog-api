@@ -11,34 +11,25 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        // 1. Validation is already done by LoginRequest.
-        // We retrieve the validated data (email & password) safely.
         $credentials = $request->validated();
 
-        // 2. Attempt to authenticate using the Session Guard
         if (Auth::attempt($credentials)) {
-            // 3. Regenerate session to prevent "Session Fixation" attacks
-            $request->session()->regenerate();
+            $user = Auth::user();
 
-            // 4. Return the user.
-            // NOTE: We do NOT return a 'token' string here. See explanation below.
-            return response()->json(['user' => $request->user()]);
+            $token = $user->createToken('Personal Access Token')->plainTextToken;
+
+            return response()->json(['user' => $user, 'access_token' => $token, 'token_type' => 'Bearer']);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if (Auth::guard('api')->check()) {
+            Auth::guard('api')->user()->token()->revoke();
+        }
 
-        return response()->json(['message' => 'Logged out']);
-    }
-
-    public function user(Request $request)
-    {
-        return $request->user();
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
