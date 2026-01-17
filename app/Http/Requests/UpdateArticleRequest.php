@@ -26,7 +26,7 @@ class UpdateArticleRequest extends FormRequest
             'text' => ['sometimes', 'required', 'string'],
             'category_id' => ['sometimes', 'required', 'integer', 'exists:categories,id'],
             'image' => ['nullable', 'image', 'max:2048'],
-            'is_published' => ['boolean'],
+            'published_at' => ['boolean'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['exists:tags,id'],
         ];

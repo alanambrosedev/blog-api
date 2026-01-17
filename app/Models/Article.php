@@ -9,7 +9,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'title', 'slug', 'text', 'image', 'is_published'];
+    protected $fillable = ['category_id', 'title', 'slug', 'text', 'image', 'published_at'];
 
     public function category()
     {
@@ -19,5 +19,12 @@ class Article extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    protected function casts()
+    {
+        return [
+            'published_at' => 'boolean',
+        ];
     }
 }

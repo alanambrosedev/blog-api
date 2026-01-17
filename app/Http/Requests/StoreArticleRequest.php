@@ -24,14 +24,11 @@ class StoreArticleRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'text' => ['required', 'string'],
-            // Ensure the category_id actually exists in the DB
             'category_id' => ['required', 'integer', 'exists:categories,id'],
-            // Image is optional, but if present must be a file type (jpeg, png, etc) max 2MB
             'image' => ['nullable', 'image', 'max:2048'],
-            'is_published' => ['boolean'],
-            // Validate tags array if provided
+            'published_at' => ['boolean'],
             'tags' => ['nullable', 'array'],
-            'tags.*' => ['exists:tags,id'], // Check each tag ID exists
+            'tags.*' => ['exists:tags,id'],
         ];
     }
 }

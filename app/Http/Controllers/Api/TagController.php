@@ -37,7 +37,7 @@ class TagController extends Controller
         return new TagResource($updated);
     }
 
-    public function delete(Tag $tag)
+    public function destroy(Tag $tag)
     {
         $this->service->deleteTag($tag);
 

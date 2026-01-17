@@ -33,7 +33,7 @@ class ArticleService
     public function updateArticle(Article $article, array $data, ?UploadedFile $image = null)
     {
         return DB::transaction(function () use ($article, $data, $image) {
-            if (isset($data['title'])) {
+            if (! $article->published_at && isset($data['title'])) {
                 $data['slug'] = Str::slug($data['title']).'-'.Str::random(6);
             }
 

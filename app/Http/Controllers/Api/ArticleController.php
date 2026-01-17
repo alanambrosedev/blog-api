@@ -16,7 +16,7 @@ class ArticleController extends Controller
     public function index()
     {
         $article = Article::with(['category', 'tags'])
-            ->where('is_published', true)
+            ->where('published_at', true)
             ->latest()
             ->paginate(10);
 
@@ -42,7 +42,7 @@ class ArticleController extends Controller
         return new ArticleResource($updated);
     }
 
-    public function delete(Article $article)
+    public function destroy(Article $article)
     {
         $this->service->deleteArticle($article);
 
