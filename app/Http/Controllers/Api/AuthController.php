@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest; // <--- Import the new Request
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +16,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            $token = $user->createToken('Personal Access Token')->plainTextToken;
+            $token = $user->createToken('Personal Access Token')->accessToken;
 
             return response()->json(['user' => $user, 'access_token' => $token, 'token_type' => 'Bearer']);
         }
@@ -24,12 +24,18 @@ class AuthController extends Controller
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        if (Auth::guard('api')->check()) {
-            Auth::guard('api')->user()->token()->revoke();
+        $user = $request->user();
+
+        if ($user) {
+            $user->token()->revoke();
+
+            return response()->json([
+                'message' => 'Logged out successfully',
+            ]);
         }
 
-        return response()->json(['message' => 'Logged out successfully']);
+        return response()->json(['message' => 'Not authenticated'], 401);
     }
 }
