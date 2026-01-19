@@ -9,7 +9,7 @@ class CategoryService
 {
     public function createCategory(array $data)
     {
-        $data = Str::slug($data['name']);
+        $data['slug'] = Str::slug($data['name']);
 
         return Category::create($data);
     }
@@ -18,10 +18,10 @@ class CategoryService
     {
         if (isset($data['name'])) {
             $data['slug'] = Str::slug($data['name']);
-            $category->update($data);
-
-            return $category;
         }
+        $category->update($data);
+
+        return $category;
     }
 
     public function deleteCategory(Category $category)
