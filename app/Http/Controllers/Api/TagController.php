@@ -15,7 +15,7 @@ class TagController extends Controller
 
     public function index()
     {
-        return TagResource::collection(Tag::all());
+        return TagResource::collection(Tag::withCount('articles')->get());
     }
 
     public function store(StoreTagRequest $request)

@@ -18,10 +18,10 @@ class TagService
     {
         if (isset($data['name'])) {
             $data['slug'] = Str::slug($data['name']);
-            $tag->update($data);
-
-            return $tag;
         }
+        $tag->update($data);
+
+        return $tag;
     }
 
     public function deleteTag(Tag $tag)
