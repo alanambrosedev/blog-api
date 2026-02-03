@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
 export default function Login() {
-    // 1. Create variables in "State" to hold the input values
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // Stop the page from refreshing!
+        e.preventDefault();
         console.log("What we are sending to Laravel eventually:", {
             email,
             password,
