@@ -17,7 +17,7 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique->word();
+        $name = fake()->unique->safeColorName();
 
         return [
             'name' => ucfirst($name),

@@ -11,7 +11,16 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'title', 'slug', 'text', 'image', 'published_at'];
+    protected $fillable = [
+        'category_id',
+        'title',
+        'user_id',
+        'slug',
+        'text',
+        'image',
+        'published_at',
+        'is_featured'
+    ];
 
     /**
      * @return BelongsTo<Category, Article>
