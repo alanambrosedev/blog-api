@@ -35,7 +35,7 @@ class Article extends Model
      */
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     protected function casts()
@@ -43,5 +43,10 @@ class Article extends Model
         return [
             'published_at' => 'boolean',
         ];
+    }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
     }
 }

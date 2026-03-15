@@ -14,6 +14,11 @@ class Tag extends Model
 
     public function articles(): BelongsToMany
     {
-        return $this->belongsToMany(Article::class);
+        return $this->morphedByMany(Article::class, 'taggable');
+    }
+
+    public function users()
+    {
+        return $this->morphedByMany(User::class, 'taggable');
     }
 }

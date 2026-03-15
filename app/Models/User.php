@@ -45,4 +45,14 @@ class User extends Authenticatable implements OAuthenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(tag::class, 'taggable');
+    }
 }
