@@ -55,4 +55,14 @@ class User extends Authenticatable implements OAuthenticatable
     {
         return $this->morphToMany(tag::class, 'taggable');
     }
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }
