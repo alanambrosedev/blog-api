@@ -16,4 +16,9 @@ class Category extends Model
     {
         return $this->hasMany(Article::class);
     }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }

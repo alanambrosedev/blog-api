@@ -22,7 +22,7 @@ class ArticleResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->text,
-            'image_url' => $this->image ? asset('storage/'.$this->image) : null,
+            'image_url' => $this->image ? asset('storage/' . $this->image->url) : null,
             'published_at' => (bool) $this->published_at,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),

@@ -27,7 +27,6 @@ class ArticleFactory extends Factory
             'title' => $this->faker->sentence(),
             'slug' => Str::slug($title),
             'text' => fake()->paragraph(3, true),
-            'image' => "https://picsum.photos/640/480",
             'published_at' => false,
             'is_featured' => false
         ];

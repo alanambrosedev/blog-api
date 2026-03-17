@@ -15,7 +15,7 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $article = Article::with(['category', 'tags'])
+        $article = Article::with(['category', 'tags', 'image'])
             ->where('published_at', true)
             ->latest()
             ->paginate(10);
@@ -25,21 +25,21 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        return new ArticleResource($article->load(['category', 'tags']));
+        return new ArticleResource($article->load(['category', 'tags', 'image']));
     }
 
     public function store(StoreArticleRequest $request)
     {
         $article = $this->service->createArticle($request->validated(), $request->file('image'));
 
-        return new ArticleResource($article);
+        return new ArticleResource($article->load(['category', 'tags', 'image']));
     }
 
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $updated = $this->service->updateArticle($article, $request->validated(), $request->file('image'));
 
-        return new ArticleResource($updated);
+        return new ArticleResource($updated->load(['category', 'tags', 'image']));
     }
 
     public function destroy(Article $article)

@@ -19,7 +19,6 @@ class Article extends Model
         'user_id',
         'slug',
         'text',
-        'image',
         'published_at',
         'is_featured'
     ];
@@ -58,14 +57,6 @@ class Article extends Model
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
-    }
-
-    public function getImageAttribute($value)
-    {
-        if (!$value) {
-            return '/images/placeholder.jpg';
-        }
-        return Storage::url($value);
     }
 
     public function getReadingTimeAttribute()

@@ -15,26 +15,26 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return CategoryResource::collection(Category::withCount('articles')->get());
+        return CategoryResource::collection(Category::withCount('articles')->with('image')->get());
     }
 
     public function store(StoreCategoryRequest $request)
     {
         $category = $this->service->createCategory($request->validated());
 
-        return new CategoryResource($category);
+        return new CategoryResource($category->load('image'));
     }
 
     public function show(Category $category)
     {
-        return new CategoryResource($category);
+        return new CategoryResource($category->load('image'));
     }
 
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $updated = $this->service->updateCategory($category, $request->validated());
 
-        return new CategoryResource($updated);
+        return new CategoryResource($updated->load('image'));
     }
 
     public function destroy(Category $category)

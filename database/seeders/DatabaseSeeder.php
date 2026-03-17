@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -39,6 +40,11 @@ class DatabaseSeeder extends Seeder
                 $article->tags()->attach(
                     $tags->random(rand(1, 3))->pluck('id')->toArray()
                 );
+                Image::create([
+                    'url' => 'articles/' . fake()->uuid() . '.jpg',
+                    'imageable_type' => Article::class,
+                    'imageable_id' => $article->id,
+                ]);
             });
 
         Article::factory(10)
@@ -48,6 +54,11 @@ class DatabaseSeeder extends Seeder
                 $article->tags()->attach(
                     $tags->random(rand(1, 3))->pluck('id')->toArray()
                 );
+                Image::create([
+                    'url' => 'articles/' . fake()->uuid() . '.jpg',
+                    'imageable_type' => Article::class,
+                    'imageable_id' => $article->id,
+                ]);
             });
 
         Article::factory(10)

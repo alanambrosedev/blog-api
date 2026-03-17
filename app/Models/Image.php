@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Image extends Model
 {
-    protected $fillable = ['url'];
+    protected $fillable = ['url', 'imageable_type', 'imageable_id'];
 
     public function imageable()
     {

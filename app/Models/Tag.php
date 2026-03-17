@@ -21,4 +21,9 @@ class Tag extends Model
     {
         return $this->morphedByMany(User::class, 'taggable');
     }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }

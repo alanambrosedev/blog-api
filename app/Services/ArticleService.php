@@ -17,6 +17,7 @@ class ArticleService
         return DB::transaction(function () use ($data, $image) {
             // 1. Prepare Article Data (Slug generation)
             $data['slug'] = Str::slug($data['title'] . '-' . Str::random(6));
+            $data['user_id'] = auth()->id();
 
             // 2. Create the Article (No 'image' column needed in articles table anymore!)
             $article = Article::create($data);
@@ -32,10 +33,6 @@ class ArticleService
                 $article->tags()->sync($data['tags']);
             }
 
-            // 5. Bonus: Non-destructive Tagging for the Author
-            // Add "Active Author" (Tag ID 1) without removing their "Staff" or "Premium" tags
-            $article->user->tags()->syncWithoutDetaching([1]);
-
             return $article;
         });
     }
@@ -48,10 +45,8 @@ class ArticleService
             }
 
             if ($image) {
-                if ($article->image) {
-                    Storage::disk('public')->delete($article->image);
-                }
-                $data['image'] = $image->store('articles', 'public');
+                $path = $image->store('articles', 'public');
+                $this->mediaService->uploadImage($article, $path);
             }
 
             $article->update($data);
@@ -66,7 +61,8 @@ class ArticleService
     public function deleteArticle(Article $article)
     {
         if ($article->image) {
-            Storage::disk('public')->delete($article->image);
+            Storage::disk('public')->delete($article->image->url);
+            $article->image->delete();
         }
         $article->delete();
     }
