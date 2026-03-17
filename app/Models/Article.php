@@ -25,6 +25,13 @@ class Article extends Model
 
     protected $appends = ['reading_time'];
 
+    protected static function booted()
+    {
+        static::addGlobalScope('published', function ($builder) {
+            $builder->where('published_at', '<=', now());
+        });
+    }
+
     /**
      * @return BelongsTo<Category, Article>
      */
@@ -64,5 +71,19 @@ class Article extends Model
         $words = str_word_count(strip_tags($this->text));
         $minutes = ceil($words / 200);
         return "{$minutes} min read";
+    }
+
+    public function scopeByCategory($query, $slug)
+    {
+        return $query->whereHas('category', function ($q) use ($slug) {
+            $q->where('slug', $slug);
+        });
+    }
+
+    public function scopeByTag($query, $slug)
+    {
+        return $query->whereHas('tags', function ($q) use ($slug) {
+            $q->where('slug', $slug);
+        });
     }
 }
