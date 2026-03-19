@@ -66,4 +66,34 @@ class ArticleService
         }
         $article->delete();
     }
+
+    public function getTrendingArticles()
+    {
+        return Article::query()->whereNotNull('published_at')
+            ->take(5)
+            ->get()
+            ->map(function ($article) {
+                return [
+                    'id' => $article->id,
+                    'title' => Str::title($article->title),
+                    'text' => Str::limit($article->title, 100)
+                ];
+            })->toArray();
+    }
+
+    public function getHeroAndFeed()
+    {
+        $articles = Article::with('category')
+            ->whereNotNull('published_at')
+            ->limit(20)
+            ->get();
+        [$featured, $regular] = $articles->partition(function ($article) {
+            return $article->is_featured;
+        });
+
+        return [
+            'hero' => $featured->sortBy(fn($a) => $a->category?->name)->values(),
+            'feed' => $regular->sortBy(fn($a) => $a->category?->name)->values(),
+        ];
+    }
 }

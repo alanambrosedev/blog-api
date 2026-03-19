@@ -48,4 +48,10 @@ class ArticleController extends Controller
 
         return response()->noContent();
     }
+
+    public function getTrendingArticles()
+    {
+        $articles = $this->service->getHeroAndFeed();
+        return response()->json($articles);
+    }
 }
