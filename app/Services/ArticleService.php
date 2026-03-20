@@ -96,4 +96,25 @@ class ArticleService
             'feed' => $regular->sortBy(fn($a) => $a->category?->name)->values(),
         ];
     }
+
+    public function analyticData($categoryId)
+    {
+        return $articles = Article::with('tags')->latest()
+            ->take(50)
+            ->when($categoryId, fn($q) => $q->where('category_id', $categoryId))
+            ->get()
+            ->pluck('tags')
+            ->flatten()
+            ->groupBy('id')
+            ->map(function ($group, $id) {
+                return [
+                    'id' => $id,
+                    'name' => $group->first()->name,
+                    'count' => $group->count()
+                ];
+            })
+            ->sortDesc()
+            ->take(3)
+            ->values();
+    }
 }

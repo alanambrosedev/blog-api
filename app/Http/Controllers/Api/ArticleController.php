@@ -49,9 +49,9 @@ class ArticleController extends Controller
         return response()->noContent();
     }
 
-    public function getTrendingArticles()
+    public function getTrendingArticles($category)
     {
-        $articles = $this->service->getHeroAndFeed();
+        $articles = $this->service->analyticData($category);
         return response()->json($articles);
     }
 }

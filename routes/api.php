@@ -29,5 +29,5 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('tags', TagController::class)
         ->except(['index']);
-    Route::get('trending-articles', [ArticleController::class, 'getTrendingArticles']);
+    Route::get('/trending-articles/{category_id}', [ArticleController::class, 'getTrendingArticles']);
 });
