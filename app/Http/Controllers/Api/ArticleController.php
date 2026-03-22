@@ -52,6 +52,7 @@ class ArticleController extends Controller
     public function getTrendingArticles($category)
     {
         $articles = $this->service->analyticData($category);
+
         return response()->json($articles);
     }
 }

@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'category_id',
@@ -20,7 +20,7 @@ class Article extends Model
         'slug',
         'text',
         'published_at',
-        'is_featured'
+        'is_featured',
     ];
 
     protected $appends = ['reading_time'];
@@ -70,6 +70,7 @@ class Article extends Model
     {
         $words = str_word_count(strip_tags($this->text));
         $minutes = ceil($words / 200);
+
         return "{$minutes} min read";
     }
 

@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
                     $tags->random(rand(1, 3))->pluck('id')->toArray()
                 );
                 Image::create([
-                    'url' => 'articles/' . fake()->uuid() . '.jpg',
+                    'url' => 'articles/'.fake()->uuid().'.jpg',
                     'imageable_type' => Article::class,
                     'imageable_id' => $article->id,
                 ]);
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
                     $tags->random(rand(1, 3))->pluck('id')->toArray()
                 );
                 Image::create([
-                    'url' => 'articles/' . fake()->uuid() . '.jpg',
+                    'url' => 'articles/'.fake()->uuid().'.jpg',
                     'imageable_type' => Article::class,
                     'imageable_id' => $article->id,
                 ]);

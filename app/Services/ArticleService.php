@@ -10,13 +10,13 @@ use Illuminate\Support\Str;
 
 class ArticleService
 {
-
     public function __construct(protected MediaService $mediaService) {}
+
     public function createArticle(array $data, ?UploadedFile $image = null)
     {
         return DB::transaction(function () use ($data, $image) {
             // 1. Prepare Article Data (Slug generation)
-            $data['slug'] = Str::slug($data['title'] . '-' . Str::random(6));
+            $data['slug'] = Str::slug($data['title'].'-'.Str::random(6));
             $data['user_id'] = auth()->id();
 
             // 2. Create the Article (No 'image' column needed in articles table anymore!)
@@ -41,7 +41,7 @@ class ArticleService
     {
         return DB::transaction(function () use ($article, $data, $image) {
             if (! $article->published_at && isset($data['title'])) {
-                $data['slug'] = Str::slug($data['title']) . '-' . Str::random(6);
+                $data['slug'] = Str::slug($data['title']).'-'.Str::random(6);
             }
 
             if ($image) {
@@ -76,7 +76,7 @@ class ArticleService
                 return [
                     'id' => $article->id,
                     'title' => Str::title($article->title),
-                    'text' => Str::limit($article->title, 100)
+                    'text' => Str::limit($article->title, 100),
                 ];
             })->toArray();
     }
@@ -92,8 +92,8 @@ class ArticleService
         });
 
         return [
-            'hero' => $featured->sortBy(fn($a) => $a->category?->name)->values(),
-            'feed' => $regular->sortBy(fn($a) => $a->category?->name)->values(),
+            'hero' => $featured->sortBy(fn ($a) => $a->category?->name)->values(),
+            'feed' => $regular->sortBy(fn ($a) => $a->category?->name)->values(),
         ];
     }
 
@@ -101,7 +101,7 @@ class ArticleService
     {
         return $articles = Article::with('tags')->latest()
             ->take(50)
-            ->when($categoryId, fn($q) => $q->where('category_id', $categoryId))
+            ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
             ->get()
             ->pluck('tags')
             ->flatten()
@@ -110,11 +110,31 @@ class ArticleService
                 return [
                     'id' => $id,
                     'name' => $group->first()->name,
-                    'count' => $group->count()
+                    'count' => $group->count(),
                 ];
             })
             ->sortDesc()
             ->take(3)
             ->values();
+    }
+
+    public function getDeletedData()
+    {
+        return Article::onlyTrashed();
+    }
+
+    public function restoreArticle($id)
+    {
+        $article = Article::withTrashed()->findOrFail($id);
+        $article->restore();
+    }
+
+    public function forceDeleteArticle($id)
+    {
+        $article = Article::withTrashed()->findOrFail($id);
+        if ($article->image) {
+            Storage::disk('public')->delete($article->image->url);
+        }
+        $article->forceDelete();
     }
 }

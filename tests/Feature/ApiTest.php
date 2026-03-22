@@ -26,16 +26,16 @@ test('can get articles index', function () {
                     'published_at',
                     'category',
                     'tags',
-                    'created_at'
-                ]
-            ]
+                    'created_at',
+                ],
+            ],
         ]);
 });
 
 test('can get single article', function () {
     $article = Article::factory()->published()->create();
 
-    $response = $this->get('/api/articles/' . $article->slug);
+    $response = $this->get('/api/articles/'.$article->slug);
 
     $response->assertStatus(200)
         ->assertJsonStructure([
@@ -48,8 +48,8 @@ test('can get single article', function () {
                 'published_at',
                 'category',
                 'tags',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
 });
 
@@ -66,9 +66,9 @@ test('can get categories', function () {
                     'name',
                     'slug',
                     'image_url',
-                    'articles_count'
-                ]
-            ]
+                    'articles_count',
+                ],
+            ],
         ]);
 });
 
@@ -83,9 +83,9 @@ test('can get tags', function () {
                 '*' => [
                     'id',
                     'name',
-                    'slug'
-                ]
-            ]
+                    'slug',
+                ],
+            ],
         ]);
 });
 
@@ -94,13 +94,13 @@ test('can login', function () {
 
     $response = $this->post('/api/login', [
         'email' => $user->email,
-        'password' => 'password'
+        'password' => 'password',
     ]);
 
     $response->assertStatus(200)
         ->assertJsonStructure([
             'user',
-            'token'
+            'token',
         ]);
 });
 
@@ -113,7 +113,7 @@ test('can create article when authenticated', function () {
         'title' => 'Test Article',
         'text' => 'Test content',
         'category_id' => $category->id,
-        'published_at' => true
+        'published_at' => true,
     ]);
 
     $response->assertStatus(201)
@@ -127,8 +127,8 @@ test('can create article when authenticated', function () {
                 'published_at',
                 'category',
                 'tags',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
 });
 
@@ -137,9 +137,9 @@ test('can update article when authenticated', function () {
     $article = Article::factory()->create(['user_id' => $user->id]);
     $this->actingAs($user, 'api');
 
-    $response = $this->put('/api/articles/' . $article->id, [
+    $response = $this->put('/api/articles/'.$article->id, [
         'title' => 'Updated Title',
-        'text' => 'Updated content'
+        'text' => 'Updated content',
     ]);
 
     $response->assertStatus(200)
@@ -153,8 +153,8 @@ test('can update article when authenticated', function () {
                 'published_at',
                 'category',
                 'tags',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
 });
 
@@ -163,7 +163,7 @@ test('can delete article when authenticated', function () {
     $article = Article::factory()->create(['user_id' => $user->id]);
     $this->actingAs($user, 'api');
 
-    $response = $this->delete('/api/articles/' . $article->id);
+    $response = $this->delete('/api/articles/'.$article->id);
 
     $response->assertStatus(204);
 });
@@ -173,7 +173,7 @@ test('can create category when authenticated', function () {
     $this->actingAs($user, 'api');
 
     $response = $this->post('/api/categories', [
-        'name' => 'Test Category'
+        'name' => 'Test Category',
     ]);
 
     $response->assertStatus(201)
@@ -183,8 +183,8 @@ test('can create category when authenticated', function () {
                 'name',
                 'slug',
                 'image_url',
-                'articles_count'
-            ]
+                'articles_count',
+            ],
         ]);
 });
 
@@ -193,8 +193,8 @@ test('can update category when authenticated', function () {
     $category = Category::factory()->create();
     $this->actingAs($user, 'api');
 
-    $response = $this->put('/api/categories/' . $category->id, [
-        'name' => 'Updated Category'
+    $response = $this->put('/api/categories/'.$category->id, [
+        'name' => 'Updated Category',
     ]);
 
     $response->assertStatus(200)
@@ -204,8 +204,8 @@ test('can update category when authenticated', function () {
                 'name',
                 'slug',
                 'image_url',
-                'articles_count'
-            ]
+                'articles_count',
+            ],
         ]);
 });
 
@@ -214,7 +214,7 @@ test('can delete category when authenticated', function () {
     $category = Category::factory()->create();
     $this->actingAs($user, 'api');
 
-    $response = $this->delete('/api/categories/' . $category->id);
+    $response = $this->delete('/api/categories/'.$category->id);
 
     $response->assertStatus(204);
 });
@@ -224,7 +224,7 @@ test('can create tag when authenticated', function () {
     $this->actingAs($user, 'api');
 
     $response = $this->post('/api/tags', [
-        'name' => 'Test Tag'
+        'name' => 'Test Tag',
     ]);
 
     $response->assertStatus(201)
@@ -232,8 +232,8 @@ test('can create tag when authenticated', function () {
             'data' => [
                 'id',
                 'name',
-                'slug'
-            ]
+                'slug',
+            ],
         ]);
 });
 
@@ -242,8 +242,8 @@ test('can update tag when authenticated', function () {
     $tag = Tag::factory()->create();
     $this->actingAs($user, 'api');
 
-    $response = $this->put('/api/tags/' . $tag->id, [
-        'name' => 'Updated Tag'
+    $response = $this->put('/api/tags/'.$tag->id, [
+        'name' => 'Updated Tag',
     ]);
 
     $response->assertStatus(200)
@@ -251,8 +251,8 @@ test('can update tag when authenticated', function () {
             'data' => [
                 'id',
                 'name',
-                'slug'
-            ]
+                'slug',
+            ],
         ]);
 });
 
@@ -261,7 +261,7 @@ test('can delete tag when authenticated', function () {
     $tag = Tag::factory()->create();
     $this->actingAs($user, 'api');
 
-    $response = $this->delete('/api/tags/' . $tag->id);
+    $response = $this->delete('/api/tags/'.$tag->id);
 
     $response->assertStatus(204);
 });

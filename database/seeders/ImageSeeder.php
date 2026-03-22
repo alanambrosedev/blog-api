@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Image;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ImageSeeder extends Seeder
@@ -16,9 +15,9 @@ class ImageSeeder extends Seeder
     public function run(): void
     {
         Article::all()->each(function ($article) {
-            if (!$article->image) {
+            if (! $article->image) {
                 Image::create([
-                    'url' => 'articles/' . fake()->uuid() . '.jpg',
+                    'url' => 'articles/'.fake()->uuid().'.jpg',
                     'imageable_type' => Article::class,
                     'imageable_id' => $article->id,
                 ]);
@@ -26,9 +25,9 @@ class ImageSeeder extends Seeder
         });
 
         Category::all()->each(function ($category) {
-            if (!$category->image) {
+            if (! $category->image) {
                 Image::create([
-                    'url' => 'categories/' . fake()->uuid() . '.jpg',
+                    'url' => 'categories/'.fake()->uuid().'.jpg',
                     'imageable_type' => Category::class,
                     'imageable_id' => $category->id,
                 ]);

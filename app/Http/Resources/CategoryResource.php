@@ -21,7 +21,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'image_url' => $this->image ? asset('storage/' . $this->image->url) : null,
+            'image_url' => $this->image ? asset('storage/'.$this->image->url) : null,
             'articles_count' => $this->whenCounted('articles'),
         ];
     }

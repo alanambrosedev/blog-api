@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreArticleRequest extends FormRequest
 {
@@ -23,6 +24,7 @@ class StoreArticleRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
+            'slug' => ['required', Rule::unique('articles')->where(fn($q) => $q->whereNull('deleted_at'))],
             'text' => ['required', 'string'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'image' => ['nullable', 'image', 'max:2048'],

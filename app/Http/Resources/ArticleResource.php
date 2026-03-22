@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,7 +22,7 @@ class ArticleResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->text,
-            'image_url' => $this->image ? asset('storage/' . $this->image->url) : null,
+            'image_url' => $this->image ? asset('storage/'.$this->image->url) : null,
             'published_at' => (bool) $this->published_at,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
