@@ -21,6 +21,7 @@ class User extends Authenticatable implements OAuthenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -64,5 +65,10 @@ class User extends Authenticatable implements OAuthenticatable
     public function getNameAttribute($value)
     {
         return ucwords($value);
+    }
+
+    public function hasRole(string $role)
+    {
+        return $this->role === $role;
     }
 }
