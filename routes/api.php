@@ -23,11 +23,13 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('articles', ArticleController::class)
         ->except(['index', 'show']);
-
-    Route::apiResource('categories', CategoryController::class)
-        ->except(['index']);
-
-    Route::apiResource('tags', TagController::class)
-        ->except(['index']);
     Route::get('/trending-articles/{category_id}', [ArticleController::class, 'getTrendingArticles']);
+
+    Route::middleware('can:manage-taxonomy')->group(function () {
+        Route::apiResource('categories', CategoryController::class)
+            ->except(['index']);
+
+        Route::apiResource('tags', TagController::class)
+            ->except(['index']);
+    });
 });

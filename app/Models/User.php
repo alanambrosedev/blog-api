@@ -21,7 +21,7 @@ class User extends Authenticatable implements OAuthenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
     ];
 
     /**
@@ -67,8 +67,8 @@ class User extends Authenticatable implements OAuthenticatable
         return ucwords($value);
     }
 
-    public function hasRole(string $role)
+    public function hasRole(string|array $roles)
     {
-        return $this->role === $role;
+        return collect($roles)->contains($this->role);
     }
 }

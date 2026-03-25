@@ -10,10 +10,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^13.0",
         "laravel/passport": "^13.4",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
@@ -23,9 +23,9 @@
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
+        "nunomaduro/collision": "^8.5",
         "nunomaduro/phpinsights": "^2.13",
-        "pestphp/pest": "^4.3",
+        "pestphp/pest": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0"
     },
     "autoload": {
