@@ -21,11 +21,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => '12345678',
-        ]);
+        User::factory()->admin()->create();
+        User::factory()->editor()->create();
+        User::factory()->author()->create();
 
         $tech = Category::factory()->create(['name' => 'Technology', 'slug' => 'technology']);
         $life = Category::factory()->create(['name' => 'Lifestyle', 'slug' => 'lifestyle']);
