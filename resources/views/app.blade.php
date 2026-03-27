@@ -3,13 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>My Blog Project</title>
-    @viteReactRefresh
-    @vite(['resources/js/app.jsx'])
+    <title>My Blog API</title>
 </head>
 
 <body>
-    <div id="root"></div>
+    <h1>Blog API</h1>
+    <p>This is a backend API. Use Postman or any API client to interact with the endpoints.</p>
 </body>
 
 </html>
