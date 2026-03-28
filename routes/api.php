@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/email/verification-notification', function (Request $request) {
-    if ($request->user()->hasVerifiedEmail()) {
-        return response()->json(['message' => 'Email already verified.']);
-    }
-    $request->user()->sendEmailVerificationNotification();
-    return response()->json(['message' => 'Verification link sent! Check your inbox.']);
-})->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
