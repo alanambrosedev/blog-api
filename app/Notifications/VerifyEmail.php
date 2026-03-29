@@ -41,10 +41,12 @@ class VerifyEmail extends Notification
             ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
         return (new MailMessage)
-            ->subject('Verify Your Account')
+            ->subject(__('Verify Your Account'))
+            ->greeting("Hello," . $notifiable->name)
             ->line('Thanks for signing up! Please verify your email to start posting articles.')
             ->action('Verify Your Account', url($apiVerifyUrl))
-            ->line('If you did not create an account, no further action is required. ');
+            ->line('If you did not create an account, no further action is required. ')
+            ->salutation("Cheers, The Engineering Team");
     }
 
     /**
