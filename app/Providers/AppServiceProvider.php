@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
+use App\Observers\ArticleObserver;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -14,16 +16,14 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        Article::observe(ArticleObserver::class);
         Event::listen(Registered::class, SendEmailVerificationNotification::class);
 
         Gate::before(function ($user, $ability) {

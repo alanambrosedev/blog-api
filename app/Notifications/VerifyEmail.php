@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
@@ -40,13 +39,14 @@ class VerifyEmail extends Notification
             now()->addMinutes(60),
             ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
+
         return (new MailMessage)
             ->subject(__('Verify Your Account'))
-            ->greeting("Hello," . $notifiable->name)
+            ->greeting('Hello,'.$notifiable->name)
             ->line('Thanks for signing up! Please verify your email to start posting articles.')
             ->action('Verify Your Account', url($apiVerifyUrl))
             ->line('If you did not create an account, no further action is required. ')
-            ->salutation("Cheers, The Engineering Team");
+            ->salutation('Cheers, The Engineering Team');
     }
 
     /**

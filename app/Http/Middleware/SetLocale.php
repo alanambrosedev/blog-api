@@ -20,6 +20,7 @@ class SetLocale
         if (in_array($language, ['en', 'ml'])) {
             App::SetLocale($language);
         }
+
         return $next($request);
     }
 }

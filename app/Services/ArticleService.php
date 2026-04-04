@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class ArticleService
 {
-    public function __construct(protected MediaService $mediaService) {}
+    public function __construct(protected ArticleImageService $imageService) {}
 
     public function createArticle(array $data, ?UploadedFile $image = null)
     {
@@ -24,8 +24,8 @@ class ArticleService
 
             // 3. Handle Polymorphic Image via Service
             if ($image) {
-                $path = $image->store('articles', 'public');
-                $this->mediaService->uploadImage($article, $path);
+                $path = $this->imageService->store($image, $data['title']);
+                $this->uploadImage($article, $path);
             }
 
             // 4. Sync Tags to Article (Destructive: replaces old with new)
@@ -45,8 +45,9 @@ class ArticleService
             }
 
             if ($image) {
-                $path = $image->store('articles', 'public');
-                $this->mediaService->uploadImage($article, $path);
+                $title = $data['title'] ?? $article->title;
+                $path = $this->imageService->store($image, $title);
+                $this->uploadImage($article, $path);
             }
 
             $article->update($data);
@@ -136,5 +137,18 @@ class ArticleService
             Storage::disk('public')->delete($article->image->url);
         }
         $article->forceDelete();
+    }
+
+    public function uploadImage(Article $article, string $url)
+    {
+        $existingImage = $article->image;
+        if ($existingImage) {
+            Storage::disk('public')->delete($existingImage->url);
+        }
+
+        return $article->image()->updateOrCreate(
+            [],
+            ['url' => $url]
+        );
     }
 }

@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -15,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
+
     return response()->json(['message' => 'Your email has been successfully verified.']);
 })->middleware(['auth:api', 'signed'])->name('verification.verify');
 

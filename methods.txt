@@ -1,0 +1,10 @@
+__construct
+usingDriver
+createImage
+decode
+decodePath
+decodeBinary
+decodeSplFileInfo
+decodeBase64
+decodeDataUri
+decodeStream
