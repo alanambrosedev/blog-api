@@ -2,13 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * @mixin Article
- */
 class ArticleResource extends JsonResource
 {
     /**
@@ -19,15 +15,18 @@ class ArticleResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'slug' => $this->slug,
-            'content' => $this->text,
-            'image_url' => $this->image ? asset('storage/'.$this->image->url) : null,
-            'published_at' => (bool) $this->published_at,
+            'id'           => $this->id,
+            'title'        => $this->title,
+            'slug'         => $this->slug,
+            'content'      => $this->when(
+                $request->routeIs('articles.update'),
+                $this->text
+            ),
+            'teaser' => str($this->text)->limit(100),
+            'is_featured'  => $this->is_featured,
+            'published_at' => $this->published_at,
             'category' => new CategoryResource($this->whenLoaded('category')),
-            'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'created_at' => $this->created_at->format('d-m-Y'),
+            'tags' => TagResource::collection($this->whenLoaded('tags'))
         ];
     }
 }

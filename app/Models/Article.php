@@ -51,7 +51,8 @@ class Article extends Model
     protected function casts()
     {
         return [
-            'published_at' => 'datetime',
+            'published_at' => 'boolean',
+            'is_featured' => 'boolean',
         ];
     }
 

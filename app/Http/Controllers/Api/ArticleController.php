@@ -20,7 +20,12 @@ class ArticleController extends Controller
             ->latest()
             ->paginate(10);
 
-        return ArticleResource::collection($article);
+        return ArticleResource::collection($article)->additional([
+            'meta' => [
+                'api_version' => '1.0.0',
+                'support_email' => 'dev_support@dev.com'
+            ]
+        ]);
     }
 
     public function show(Article $article)
