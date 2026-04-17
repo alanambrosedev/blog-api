@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Article extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'category_id',
@@ -30,6 +32,14 @@ class Article extends Model
         static::addGlobalScope('published', function ($builder) {
             $builder->where('published_at', '<=', now());
         });
+    }
+
+    public function getActivitylogOptions()
+    {
+        return LogOptions::defaults()
+            ->logOnly(['title', 'text', 'is_featured'])
+            ->logOnlyDirty()
+            ->useLogName('article');
     }
 
     /**

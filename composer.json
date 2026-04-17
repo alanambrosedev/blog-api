@@ -14,7 +14,8 @@
         "laravel/framework": "^13.0",
         "laravel/passport": "^13.4",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^3.0"
+        "laravel/tinker": "^3.0",
+        "spatie/laravel-activitylog": "^5.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
