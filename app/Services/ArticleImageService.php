@@ -15,11 +15,11 @@ class ArticleImageService
     {
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
         $extension = strtolower($file->getClientOriginalExtension());
-        if (!in_array($extension, $allowed)) {
+        if (! in_array($extension, $allowed)) {
             throw new \InvalidArgumentException("Unsupported file type: {$extension}");
         }
 
-        $manager = new ImageManager(new Driver());
+        $manager = new ImageManager(new Driver);
         $manager = ImageManager::usingDriver(Driver::class);
 
         $image = $manager->decode($file);
@@ -33,9 +33,9 @@ class ArticleImageService
         });
 
         $slug = Str::slug($articleTitle);
-        $unique = time() . '-' . Str::uuid();
+        $unique = time().'-'.Str::uuid();
         $fileName = "{$slug}-{$unique}.webp";
-        $path = 'articles/' . now()->format('Y/m') . '/' . $fileName;
+        $path = 'articles/'.now()->format('Y/m').'/'.$fileName;
 
         Storage::disk('public')->put(
             $path,

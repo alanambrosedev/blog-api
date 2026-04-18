@@ -13,7 +13,7 @@ use Spatie\Activitylog\Support\LogOptions;
 
 class Article extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'category_id',
@@ -36,10 +36,16 @@ class Article extends Model
 
     public function getActivitylogOptions()
     {
+        // return LogOptions::defaults()
+        //     ->logOnly(['title', 'text', 'is_featured'])
+        //     ->logOnlyDirty()
+        //     ->useLogName('article');
         return LogOptions::defaults()
-            ->logOnly(['title', 'text', 'is_featured'])
+            ->logOnly(['title', 'content', 'category_id'])
             ->logOnlyDirty()
-            ->useLogName('article');
+            ->useLogName('article')
+            ->dontLogEmptyChanges()
+            ->setDescriptionForEvent(fn (string $eventName) => "Article `$this->title` has been {$eventName}");
     }
 
     /**

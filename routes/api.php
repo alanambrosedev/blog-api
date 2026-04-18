@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\AuditController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TagController;
@@ -27,12 +28,13 @@ Route::get('/tags', [TagController::class, 'index']);
 Route::middleware('auth:api', 'verified')->group(function () {
 
     Route::get('/user', [AuthController::class, 'user']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('articles', ArticleController::class)
         ->except(['index', 'show']);
     Route::get('/trending-articles/{category_id}', [ArticleController::class, 'getTrendingArticles']);
-
+    Route::get('/audits', [AuditController::class, 'index']);
     Route::middleware('can:manage-taxonomy')->group(function () {
         Route::apiResource('categories', CategoryController::class)
             ->except(['index']);

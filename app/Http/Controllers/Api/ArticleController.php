@@ -23,8 +23,8 @@ class ArticleController extends Controller
         return ArticleResource::collection($article)->additional([
             'meta' => [
                 'api_version' => '1.0.0',
-                'support_email' => 'dev_support@dev.com'
-            ]
+                'support_email' => 'dev_support@dev.com',
+            ],
         ]);
     }
 
