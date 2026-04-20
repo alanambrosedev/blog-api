@@ -10,8 +10,9 @@ class AuditController extends Controller
     public function index()
     {
         $audits = Activity::with(['causer', 'subject'])->latest()->limit(20)->get();
+
         return response()->json([
-            'data' => $audits
+            'data' => $audits,
         ]);
     }
 }

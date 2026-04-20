@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\ArticleNotFoundException;
+use App\Exceptions\ArticleNotPublishedException;
 use App\Models\Article;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -150,5 +152,20 @@ class ArticleService
             [],
             ['url' => $url]
         );
+    }
+
+    public function getPublishedArticle(string $slug): Article
+    {
+        $article = Article::where('slug', $slug)->first();
+
+        if (! $article) {
+            throw new ArticleNotFoundException($slug);
+        }
+
+        if (! $article->published_at || $article->published_at->isFuture()) {
+            throw new ArticleNotPublishedException($slug);
+        }
+
+        return $article;
     }
 }

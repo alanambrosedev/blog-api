@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\ArticleNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -28,9 +29,15 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function show(Article $article)
+    public function show(string $slug)
     {
-        return new ArticleResource($article->load(['category', 'tags', 'image']));
+        $article = Article::where('slug', $slug)->with(['category', 'tags'])
+            ->first();
+        if (! $article) {
+            throw new ArticleNotFoundException($slug);
+        }
+
+        return new ArticleResource($article);
     }
 
     public function store(StoreArticleRequest $request)
