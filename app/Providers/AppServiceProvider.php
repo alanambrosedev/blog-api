@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserRegistered;
+use App\Listeners\SendWelcomeEmail;
 use App\Models\Article;
 use App\Observers\ArticleObserver;
 use Illuminate\Auth\Access\Response;
@@ -24,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Article::observe(ArticleObserver::class);
-        Event::listen(Registered::class, SendEmailVerificationNotification::class);
+        Event::listen(UserRegistered::class, SendWelcomeEmail::class);
 
         Gate::before(function ($user, $ability) {
             if ($user->hasRole('admin')) {

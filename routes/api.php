@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuditController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TagController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::middleware('auth:api', 'verified')->group(function () {
         ->except(['index', 'show']);
     Route::get('/trending-articles/{category_id}', [ArticleController::class, 'getTrendingArticles']);
     Route::get('/audits', [AuditController::class, 'index']);
+    Route::apiResource('users', UserController::class);
     Route::middleware('can:manage-taxonomy')->group(function () {
         Route::apiResource('categories', CategoryController::class)
             ->except(['index']);
