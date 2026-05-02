@@ -1,0 +1,24 @@
+[90m= [39m[34;4mApp\Models\Article[39;24m {#8582
+    [34muser_id[39m: [35m1[39m,
+    [34mtitle[39m: [32m"[39m[32mThe Power of Laravel 13[39m[32m"[39m,
+    [34mslug[39m: [32m"[39m[32mthe-power-of-laravel-13[39m[32m"[39m,
+    [34mtext[39m: [32m"[39m[32mLaravel 13 simplifies mailables and queues remarkably.[39m[32m"[39m,
+    [34mis_featured[39m: [36mtrue[39m,
+    [34mcategory_id[39m: [35m1[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-05-02 11:08:48[39m[32m"[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-05-02 11:08:48[39m[32m"[39m,
+    [34mid[39m: [35m31[39m,
+    +[1mreading_time[22m: [32m"[39m[32m1 min read[39m[32m"[39m,
+  }
+[90m= [39m[34;4mApp\Models\Article[39;24m {#8755
+    [34muser_id[39m: [35m1[39m,
+    [34mtitle[39m: [32m"[39m[32mThe Power of Laravel 13[39m[32m"[39m,
+    [34mslug[39m: [32m"[39m[32mthe-power-of-laravel-13-1777720266[39m[32m"[39m,
+    [34mtext[39m: [32m"[39m[32mTesting email triggers again.[39m[32m"[39m,
+    [34mis_featured[39m: [36mtrue[39m,
+    [34mcategory_id[39m: [35m1[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-05-02 11:11:06[39m[32m"[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-05-02 11:11:06[39m[32m"[39m,
+    [34mid[39m: [35m33[39m,
+    +[1mreading_time[22m: [32m"[39m[32m1 min read[39m[32m"[39m,
+  }

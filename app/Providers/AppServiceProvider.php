@@ -7,8 +7,6 @@ use App\Listeners\SendWelcomeEmail;
 use App\Models\Article;
 use App\Observers\ArticleObserver;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
