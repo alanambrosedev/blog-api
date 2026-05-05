@@ -18,7 +18,7 @@ class ArticleService
     {
         return DB::transaction(function () use ($data, $image) {
             // 1. Prepare Article Data (Slug generation)
-            $data['slug'] = Str::slug($data['title'].'-'.Str::random(6));
+            $data['slug'] = Str::slug($data['title'] . '-' . Str::random(6));
             $data['user_id'] = auth()->id();
 
             // 2. Create the Article (No 'image' column needed in articles table anymore!)
@@ -43,7 +43,7 @@ class ArticleService
     {
         return DB::transaction(function () use ($article, $data, $image) {
             if (! $article->published_at && isset($data['title'])) {
-                $data['slug'] = Str::slug($data['title']).'-'.Str::random(6);
+                $data['slug'] = Str::slug($data['title']) . '-' . Str::random(6);
             }
 
             if ($image) {
@@ -72,7 +72,7 @@ class ArticleService
 
     public function getTrendingArticles()
     {
-        return Article::query()->whereNotNull('published_at')
+        return Article::query()->where('published_at', true)
             ->take(5)
             ->get()
             ->map(function ($article) {
@@ -87,7 +87,7 @@ class ArticleService
     public function getHeroAndFeed()
     {
         $articles = Article::with('category')
-            ->whereNotNull('published_at')
+            ->where('published_at', true)
             ->limit(20)
             ->get();
         [$featured, $regular] = $articles->partition(function ($article) {
@@ -95,8 +95,8 @@ class ArticleService
         });
 
         return [
-            'hero' => $featured->sortBy(fn ($a) => $a->category?->name)->values(),
-            'feed' => $regular->sortBy(fn ($a) => $a->category?->name)->values(),
+            'hero' => $featured->sortBy(fn($a) => $a->category?->name)->values(),
+            'feed' => $regular->sortBy(fn($a) => $a->category?->name)->values(),
         ];
     }
 
@@ -104,7 +104,7 @@ class ArticleService
     {
         return $articles = Article::with('tags')->latest()
             ->take(50)
-            ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
+            ->when($categoryId, fn($q) => $q->where('category_id', $categoryId))
             ->get()
             ->pluck('tags')
             ->flatten()
@@ -162,7 +162,7 @@ class ArticleService
             throw new ArticleNotFoundException($slug);
         }
 
-        if (! $article->published_at || $article->published_at->isFuture()) {
+        if (! $article->published_at) {
             throw new ArticleNotPublishedException($slug);
         }
 

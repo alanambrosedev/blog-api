@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ArticlePublished;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +31,19 @@ class Article extends Model
     protected static function booted()
     {
         static::addGlobalScope('published', function ($builder) {
-            $builder->where('published_at', '<=', now());
+            $builder->where('published_at', true);
+        });
+
+        static::created(function ($article) {
+            if ($article->published_at) {
+                $article->user->notify(new ArticlePublished($article));
+            }
+        });
+
+        static::updated(function ($article) {
+            if ($article->isDirty('published_at') && $article->published_at) {
+                $article->user->notify(new ArticlePublished($article));
+            }
         });
     }
 
@@ -45,7 +58,7 @@ class Article extends Model
             ->logOnlyDirty()
             ->useLogName('article')
             ->dontLogEmptyChanges()
-            ->setDescriptionForEvent(fn (string $eventName) => "Article `$this->title` has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => "Article `$this->title` has been {$eventName}");
     }
 
     /**
@@ -69,13 +82,10 @@ class Article extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    protected function casts()
-    {
-        return [
-            'published_at' => 'boolean',
-            'is_featured' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'published_at' => 'boolean',
+        'is_featured' => 'boolean',
+    ];
 
     public function image()
     {

@@ -5,7 +5,8 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\ImageManager;
 
@@ -19,8 +20,8 @@ class ArticleImageService
             throw new \InvalidArgumentException("Unsupported file type: {$extension}");
         }
 
-        $manager = new ImageManager(new Driver);
-        $manager = ImageManager::usingDriver(Driver::class);
+        $driverClass = extension_loaded('imagick') ? ImagickDriver::class : GdDriver::class;
+        $manager = new ImageManager($driverClass);
 
         $image = $manager->decode($file);
 
@@ -28,14 +29,13 @@ class ArticleImageService
         $image->text('@Blog', 1180, 20, function ($font) {
             $font->size(24);
             $font->color('ffffff');
-            $font->align('right');
-            $font->valign('top');
+            $font->align('right', 'top');
         });
 
         $slug = Str::slug($articleTitle);
-        $unique = time().'-'.Str::uuid();
+        $unique = time() . '-' . Str::uuid();
         $fileName = "{$slug}-{$unique}.webp";
-        $path = 'articles/'.now()->format('Y/m').'/'.$fileName;
+        $path = 'articles/' . now()->format('Y/m') . '/' . $fileName;
 
         Storage::disk('public')->put(
             $path,
