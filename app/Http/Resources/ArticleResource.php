@@ -23,7 +23,7 @@ class ArticleResource extends JsonResource
                 $this->text
             ),
             'teaser' => str($this->text)->limit(100),
-            'image_url' => $this->image ? asset('storage/' . $this->image->url) : null,
+            'image_url' => $this->image ? asset('storage/'.$this->image->url) : null,
             'is_featured' => $this->is_featured,
             'published_at' => $this->published_at,
             'category' => new CategoryResource($this->whenLoaded('category')),

@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Article;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -37,8 +36,8 @@ class ArticlePublished extends Notification
     {
         return (new MailMessage)
             ->line('Your article is published.')
-            ->greeting('Hello ' . $notifiable->name)
-            ->action('View Article', url('/articles/' . $this->article->slug))
+            ->greeting('Hello '.$notifiable->name)
+            ->action('View Article', url('/articles/'.$this->article->slug))
             ->line('Thanks for writing with us!');
     }
 
@@ -52,7 +51,7 @@ class ArticlePublished extends Notification
         return [
             'article_id' => $this->article->id,
             'title' => $this->article->title,
-            'slug' => $this->article->slug
+            'slug' => $this->article->slug,
         ];
     }
 }

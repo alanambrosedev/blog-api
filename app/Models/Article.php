@@ -58,7 +58,7 @@ class Article extends Model
             ->logOnlyDirty()
             ->useLogName('article')
             ->dontLogEmptyChanges()
-            ->setDescriptionForEvent(fn(string $eventName) => "Article `$this->title` has been {$eventName}");
+            ->setDescriptionForEvent(fn (string $eventName) => "Article `$this->title` has been {$eventName}");
     }
 
     /**

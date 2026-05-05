@@ -33,9 +33,9 @@ class ArticleImageService
         });
 
         $slug = Str::slug($articleTitle);
-        $unique = time() . '-' . Str::uuid();
+        $unique = time().'-'.Str::uuid();
         $fileName = "{$slug}-{$unique}.webp";
-        $path = 'articles/' . now()->format('Y/m') . '/' . $fileName;
+        $path = 'articles/'.now()->format('Y/m').'/'.$fileName;
 
         Storage::disk('public')->put(
             $path,
