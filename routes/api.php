@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuditController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
 use App\Mail\ArticleFeatured;
@@ -35,6 +36,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show']);
+Route::get('/notifications/unread', [NotificationController::class, 'unread']);
+Route::post('/notifications/read/{id}', [NotificationController::class, 'markAsRead']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/tags', [TagController::class, 'index']);
@@ -44,7 +47,6 @@ Route::middleware('auth:api', 'verified')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
     Route::apiResource('articles', ArticleController::class)
         ->except(['index', 'show']);
     Route::get('/trending-articles/{category_id}', [ArticleController::class, 'getTrendingArticles']);

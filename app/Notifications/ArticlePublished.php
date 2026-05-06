@@ -16,7 +16,8 @@ class ArticlePublished extends Notification
      */
     public function __construct(public Article $article)
     {
-        //
+        $this->onQueue('notifications');
+        $this->delay(now()->addSeconds(5));
     }
 
     /**
@@ -36,8 +37,8 @@ class ArticlePublished extends Notification
     {
         return (new MailMessage)
             ->line('Your article is published.')
-            ->greeting('Hello '.$notifiable->name)
-            ->action('View Article', url('/articles/'.$this->article->slug))
+            ->greeting('Hello ' . $notifiable->name)
+            ->action('View Article', url('/articles/' . $this->article->slug))
             ->line('Thanks for writing with us!');
     }
 
@@ -46,7 +47,7 @@ class ArticlePublished extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
         return [
             'article_id' => $this->article->id,
