@@ -14,7 +14,7 @@ class NotificationController extends Controller
 
         return response()->json([
             'status' => true,
-            'data' => $notifications
+            'data' => $notifications,
         ]);
     }
 
@@ -23,18 +23,18 @@ class NotificationController extends Controller
         $user = $request->user();
         $notification = $user->notifications()->find($id);
 
-        if (!$notification) {
+        if (! $notification) {
             return response()->json([
                 'status' => false,
-                'message' => 'Notification not found'
+                'message' => 'Notification not found',
             ], 404);
         }
 
         $notification->markAsRead();
 
         return response()->json([
-            'status' =>  true,
-            'message' => "Notification mark as unread!"
+            'status' => true,
+            'message' => 'Notification mark as unread!',
         ]);
     }
 }

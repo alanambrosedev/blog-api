@@ -37,8 +37,8 @@ class ArticlePublished extends Notification
     {
         return (new MailMessage)
             ->line('Your article is published.')
-            ->greeting('Hello ' . $notifiable->name)
-            ->action('View Article', url('/articles/' . $this->article->slug))
+            ->greeting('Hello '.$notifiable->name)
+            ->action('View Article', url('/articles/'.$this->article->slug))
             ->line('Thanks for writing with us!');
     }
 
