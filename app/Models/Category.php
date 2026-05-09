@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -18,6 +19,20 @@ class Category extends Model
         static::deleting(function ($category) {
             $category->articles()->delete();
         });
+        static::creating(function ($category) {
+            $category->slug = self::generateSlug($category->name);
+        });
+    }
+
+    public static function generateSlug($name)
+    {
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug;
+        $count = 1;
+        while (self::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $count++;
+        };
+        return $slug;
     }
 
     public function articles(): HasMany
