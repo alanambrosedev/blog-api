@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -30,8 +30,9 @@ class Category extends Model
         $slug = $baseSlug;
         $count = 1;
         while (self::where('slug', $slug)->exists()) {
-            $slug = $baseSlug . '-' . $count++;
-        };
+            $slug = $baseSlug.'-'.$count++;
+        }
+
         return $slug;
     }
 

@@ -2,8 +2,6 @@
 
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
 
 it('generates a slug from the name', function () {
     $category = Category::create(['name' => 'Web Development']);
