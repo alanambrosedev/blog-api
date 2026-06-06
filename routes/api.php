@@ -11,10 +11,37 @@ use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
 use App\Mail\ArticleFeatured;
 use App\Models\Article;
+use App\Services\JsonService;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test/users', function () {
+    $response = Http::retry(5)->timeout(200)->post('https://jsonplaceholder.typicode.com/posts', [
+        "title" => "Test User",
+        "body" => "Lorem ipsum",
+        "userId" => 1
+    ]);
+
+    if ($response->successful()) {
+        return "Success";
+    }
+});
+Route::get('/test/posts', function (JsonService $json) {
+    return $json->getUsers();
+});
+Route::get('/test/dashboard', function () {
+    $responses = Http::pool(fn($pool) => [
+        $pool->get('https://jsonplaceholder.typicode.com/users'),
+        $pool->get('https://jsonplaceholder.typicode.com/posts'),
+    ]);
+
+    return [
+        'users' => $responses[0]->json(),
+        'posts' => $responses[1]->json(),
+    ];
+});
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/test-featured-mail/{id}', function ($id) {
